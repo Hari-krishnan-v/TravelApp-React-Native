@@ -5,7 +5,7 @@ import Animated, { useSharedValue, withSpring, withTiming } from 'react-native-r
 import { useNavigation } from "@react-navigation/native";
 
 // Correct image path assuming the image is in the assets folder
-import backgroundImage from '../assets/images/backgroundImage.png'; // Adjust path if needed
+import backgroundImage from '../assets/images/backgroundImage.jpg'; // Adjust path if needed
 
 const Welcome = () => {
     const scale = useSharedValue(1);
@@ -17,7 +17,7 @@ const Welcome = () => {
             scale.value = withSpring(scale.value + 40);
             opacity.value = withSpring(opacity.value + 100);
         }, 100);
-        setTimeout(() => navigation.navigate('home'), 2500); // Navigate to the "home" screen after 2.5 seconds
+        setTimeout(() => navigation.navigate('home'), 3000); // Navigate to the "home" screen after 2.5 seconds
     }, []);
 
     return (
