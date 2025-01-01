@@ -11,6 +11,8 @@ import Header from "@/components/homeComponents/header";
 import Autocomplete from 'react-native-autocomplete-input';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { Easing, useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
+import {Pressable} from "@react-native-material/core";
+import {useNavigation} from "@react-navigation/native";
 
 const Home = () => {
     const [refreshing, setRefreshing] = React.useState(false);
@@ -19,6 +21,7 @@ const Home = () => {
     const [statusColor, setstatusColor] = React.useState('light')
     const [suggestions, setSuggestions] = React.useState([])
     const [search, setSearch] = React.useState('')
+    const navigation = useNavigation();
 
 
     const slideAnim = useSharedValue(-100);
@@ -38,7 +41,7 @@ const Home = () => {
             setRefreshing(false);
         }, 2000);
     }, []);
-    const Status = true;
+    const Status = false;
     const handleScroll = (event: any) => {
         const yOffset = event.nativeEvent.contentOffset.y;
         if (yOffset > 25) {
@@ -54,7 +57,7 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={statusbarbg}  style={statusColor} />
+            <StatusBar  style='dark' backgroundColor={Colors.light.background}/>
             <ScrollView  horizontal={false}
                          onScroll={handleScroll} // Attach the onScroll event handler
                          scrollEventThrottle={16}
@@ -64,31 +67,19 @@ const Home = () => {
                 <Animated.View style={{ // Apply fade-in effect
                     transform: [{ translateY: slideAnim }]
                 }}>
-                    <LinearGradient
-                        colors={['#670202', '#A00000']} // Your desired gradient colors
-                        start={{ x: 0, y: 0 }}           // Starting position of the gradient
-                        end={{ x: 1, y: 1 }}             // Ending position of the gradient
-                        style={{
-                            flexDirection: 'column',
-                            backgroundColor: '#0e371f', // You can keep a fallback color
-                            maxHeight: hp('20%'),
-                            borderBottomLeftRadius: 50,
-                            borderBottomRightRadius: 50,
-                        }}
-                    // If you want to keep the animation effect
-
-                    >
+                    <View>
                         {/*header section*/}
-                        <Header points={points} pointVisible={true} />
-
-
-
+                        <Header/>
                         {/*search option*/}
-                        <View style={styles.searchContainer}>
+                        <Pressable style={styles.searchContainer} onPress={() => {
+                            // @ts-ignore
+                            navigation.navigate('search')
+
+                        }}>
                             <Ionicons name="search-outline" size={24} color="black" />
-                            <TextInput style={styles.searchInput} placeholder="Where to go?" />
-                        </View>
-                    </LinearGradient>
+                            <Text style={styles.searchInput}  >Where to go?"</Text>
+                        </Pressable>
+                    </View>
                 </Animated.View>
 
 
@@ -142,8 +133,8 @@ const Home = () => {
 
 
                 <View style={styles.places}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.dark }}>Journey Together</Text>
-                    <Text style={{ color: Colors.seeAll }}>See all</Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Let’s Explore Together </Text>
+                    <Text style={{color:Colors.light.text.grey}} >See all</Text>
                 </View>
 
                 {/*.............cards..............*/}
@@ -160,6 +151,7 @@ const Home = () => {
                                 image={data.image}
                                 title={data.title}
                                 description={data.description}
+                                location={data.location}
                             />
                         ))}
                     </View>
@@ -169,7 +161,7 @@ const Home = () => {
 
 
                 <View style={styles.row}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: Colors.dark }}>Hotels recomendation for you</Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.dark }}>Hotels recomendation for you</Text>
                     <Text style={{ color: Colors.seeAll }}>See all</Text>
                 </View>
                 {/*    hotels cards*/}
@@ -197,7 +189,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        backgroundColor: Colors.light.background,
         gap: 10,
     },
 
@@ -207,21 +199,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: wp('90%'),
         height: hp('6%'),
-        borderRadius: 10,
+        borderRadius: 17,
         padding: wp('2%'),
         marginRight: wp('5%'),
         marginLeft: wp('5%'),
         borderWidth: 1,
+        borderColor: '#DFDFDF',
         backgroundColor: '#fff',
         zIndex: 10,
         overflow: 'hidden',
     },
     searchInput: {
-        flex: 1,
-        position: 'relative',
-        height: hp('100%'),
+        fontSize:14,
+        color: Colors.light.text.grey,
         marginLeft: wp('2%'),
-        zIndex: 10,
+
 
         // To add space between icon and input
     },

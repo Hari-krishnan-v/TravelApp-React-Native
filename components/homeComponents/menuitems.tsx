@@ -86,8 +86,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         gap: 5,
-
-
     },
     round: {
         borderRadius: 20,
@@ -97,12 +95,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: wp('1%'),
-        boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.42)',
+        boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.2)',
     },
     menuText: {
         fontSize: 13,
         color: 'black',
         fontWeight: 'bold',
+        fontFamily: 'Poppins-SemiBold',
         textAlign: 'center',
     }
 })

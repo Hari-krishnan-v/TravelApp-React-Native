@@ -13,55 +13,43 @@ interface CardsProps {
     image?: any,
     title?: string
     description?: string
+    location?: string
 }
 
-const Cards = ({ image, title, description }: CardsProps) => {
+const Cards = ({ image, title, description,location }: CardsProps) => {
     const navigation = useNavigation()
     return (
 
-        <View style={styles.CardContainer}>
+        <Pressable onPress={() => {
+            // @ts-ignore
+            navigation.navigate('tripDetail', {
+                image: image,
+                title: title,
+                description: description,
+                location: location,
+            })
+        }} style={styles.CardContainer}>
             <View style={styles.imageContainer}>
                 <ImageBackground
                     source={{ uri: image }}
                     style={{ justifyContent: 'center', height: hp('14%'), width: wp('50%') }}
                 />
             </View>
-            <View style={{ marginLeft: wp('2%') }}>
-                <Text style={styles.cardHead}>{title}</Text>
-                <Text style={styles.cardDescription}>{description}</Text>
-                <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                    <Ionicons name="star" size={10} color="#FFC107" />
-                    <Text style={{ fontSize: 10 }}>4.5</Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-                    <View style={{ flexDirection: 'column' }}>
-                        <Text style={{ fontSize: 10 }}>Start from</Text>
-                        <Text style={{ fontSize: 12, color: Colors.orange, fontWeight: 'bold' }}>$ 150/paz</Text>
+            <View style={{ width:189,gap:5 }}>
+                <View style={{flexDirection:'row',justifyContent:'space-between',}}>
+                    <Text style={styles.cardHead}>{title}</Text>
+                    <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+                        <Ionicons name="star" size={10} color={Colors.light.icon} />
+                        <Text style={{fontFamily:'Poppins-Medium', fontSize: 12,color:Colors.light.text.grey }}>4.5</Text>
                     </View>
-                    <Pressable onPress={() => {
-                        // @ts-ignore
-                        navigation.navigate('tripDetail', {
-                            image: image,
-                            title: title,
-                        })
-                    }} style={{
-                        width: 56,
-                        height: 24,
-                        borderRadius: 16,
-                        backgroundColor: Colors.dark,
-                        justifyContent: 'center',
-                        marginRight: 10
-                    }}>
-                        <Text style={{
-                            fontSize: 12,
-                            textAlign: 'center',
-                            color: Colors.white
-                        }}>Book</Text>
-                    </Pressable>
+                </View>
+                <View style={{flexDirection:'row',alignItems:'center',gap:5}}>
+                    <Ionicons name="location" size={12} color={Colors.light.icon} />
+                    <Text style={styles.cardDescription}>{location}</Text>
                 </View>
             </View>
 
-        </View>
+        </Pressable>
 
     )
 }
@@ -72,7 +60,7 @@ const HotelCard = () => {
             <ImageBackground source={room1}
                 style={{ justifyContent: 'center', height: hp('10%'), width: wp('35%'), borderRadius: 20 }} />
             <View style={{ flexDirection: 'column', padding: 10, gap: 5 }}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#336749' }}>Haze and Kites Munnar</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#336749',fontFamily:'Poppins-Medium' }}>Haze and Kites Munnar</Text>
                 <View style={{ flexDirection: 'row', gap: 5 }}>
                     <Ionicons name="star" size={10} color="#FFC107" />
                     <Ionicons name="star" size={10} color="#FFC107" />
@@ -89,8 +77,10 @@ export { HotelCard }
 const styles = StyleSheet.create({
 
     CardContainer: {
-        width: wp('40%'),
-        height: hp('26%'),
+        width: 213,
+        height: 195,
+        justifyContent:'center',
+        alignItems: 'center',
         backgroundColor: 'white',
         flexDirection: 'column',
         borderRadius: 10,
@@ -99,27 +89,30 @@ const styles = StyleSheet.create({
         // boxShadow: '0px 0px 30px rgba(0, 0, 0, 10)',
     },
     imageContainer: {
-        maxWidth: wp('100%'),
+        maxWidth: 197,
+        maxHeight: 119,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 13,
         overflow: 'hidden',
         backgroundColor: 'white',
     },
     cardHead: {
         fontSize: 14,
         fontWeight: 'bold',
-        color: '#292b2b',
+        color: Colors.light.text.black,
         marginTop: hp('1%'),
+        fontFamily: 'Poppins-Medium',
 
     },
     cardDescription: {
-        fontSize: 9,
-        color: '#292b2b',
+        fontSize: 12,
+        color: Colors.light.text.grey,
     },
     HotelContainer: {
         flexDirection: 'row',
         width: wp('90%'),
-        maxHeight: hp('15%'),
+        maxHeight: 116,
         backgroundColor: 'white',
         marginLeft: wp('5%'),
         marginTop: hp('1%'),

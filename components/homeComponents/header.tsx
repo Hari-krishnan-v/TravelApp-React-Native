@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import TypeWriter from "@sucho/react-native-typewriter";
 
 // @ts-ignore
-const Header = ({ points, pointVisible }) => {
+const Header = () => {
     const navigation = useNavigation()
     return (
         <View style={styles.header}>
@@ -26,18 +26,11 @@ const Header = ({ points, pointVisible }) => {
                     cursorStyle={styles.typeWriterCursorText}
                 />
 
-                {pointVisible && (
-                    <View style={styles.coins}>
-                        <Ionicons name="cash-outline" size={24} color="#FFC107" />
-                        <Text style={styles.coinsText}>{points} points</Text>
-                    </View>
-                )}
-
             </View>
             <Ionicons onPress={() => {
                 // @ts-ignore
                 navigation.navigate("settings")
-            }} name="person-circle" size={50} color="white" />
+            }} name="person-circle" size={50} color="darkgray" />
         </View>
     )
 }
@@ -58,7 +51,7 @@ const styles = StyleSheet.create({
     },
     headerText: {
         justifyContent: "flex-start",
-        color: 'white',
+        color: '#121212',
         fontSize: 24,
         fontWeight: 'bold',
         marginRight: wp('2%'),
@@ -70,6 +63,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginRight: wp('5%'),
         marginTop: hp('1.5%'),
+        fontFamily:'Poppins-SemiBold'
     },
     coinsText: {
         marginLeft: wp('2%'),

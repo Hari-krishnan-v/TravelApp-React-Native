@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
+import { useFonts } from 'expo-font';
 import welcome from "@/app/screens/AuthenticationScreens/welcome";
 import home from "@/app/screens/(tabs)/home";
 import NewTrip from "@/app/screens/(tabs)/newTrip";
@@ -15,11 +16,22 @@ import hotel from "@/app/screens/hotel/hotel";
 import train from "@/app/screens/train/train";
 import bus from "@/app/screens/bus/bus"; // Import the trip detail screen
 import {AuthProvider} from "@/store/authContext";
+import SearchScreen from "@/app/screens/search/searchScreen";
+import {ActivityIndicator} from "react-native";
 
 const Stack = createSharedElementStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const _layout = () => {
+    const [fontsLoaded] = useFonts({
+        'Poppins-Regular': require('@/assets/fonts/Poppins-Regular.ttf'),
+        'Poppins-Bold': require('@/assets/fonts/Poppins-Bold.ttf'),
+        'Poppins-SemiBold': require('@/assets/fonts/Poppins-SemiBold.ttf'),
+        'Poppins-Medium': require('@/assets/fonts/Poppins-Medium.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
 
     const isAuthenticated = true
     const config = {
@@ -48,6 +60,7 @@ const _layout = () => {
                 <Stack.Screen name={"hotel"} component={hotel} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"train"} component={train} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"bus"} component={bus} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
+                <Stack.Screen name={"search"} component={SearchScreen} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
             </Stack.Navigator>
             </AuthProvider>
         );

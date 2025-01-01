@@ -22,7 +22,7 @@ const TravelPlanForm: React.FC = () => {
     return (
         <View style={styles.container}>
             <StatusBar />
-            <Header points={0} pointVisible={false} />
+            <Header  />
             <View style={styles.form}>
                 <Text style={styles.label}>Current Location</Text>
                 <TextInput
@@ -54,9 +54,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        backgroundColor: Colors.white,
-        paddingLeft: wp('2%'),
-        paddingRight: wp('2%'),
+        backgroundColor: Colors.light.background,
+        gap: 10,
     },
     label: {
         fontSize: 16,
