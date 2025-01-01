@@ -1,38 +1,63 @@
-import {StyleSheet, Text, View} from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
-import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { aeroplaneSVG, bedSVG, busSVG, trainSVG } from "@/assets/icons/icons";
+import { SvgXml } from "react-native-svg";
+import { Pressable } from "@react-native-material/core";
+import Animated from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
 
 const MenuItems = () => {
+    const navigation = useNavigation()
+
     return (
         <View style={styles.menu}>
             {/*........menu items..........*/}
-            <View style={styles.menuitems}>
-                <View style={styles.round}>
-                    <Ionicons name='airplane-outline' size={24} color="#336749"/>
-                </View>
+            <Animated.View style={styles.menuitems}>
+                <Pressable style={styles.round}
+                    onPress={() => {
+                        // @ts-ignore
+                        navigation.navigate("flight")
+                    }}
+                    pressEffect={'ripple'}>
+                    <SvgXml xml={aeroplaneSVG} width="25" height="25" />
+                </Pressable>
                 <Text style={styles.menuText}>Flight</Text>
-            </View>
+            </Animated.View>
+
             {/*........menu items..........*/}
             <View style={styles.menuitems}>
-                <View style={styles.round}>
-                    <Ionicons name='business-outline' size={24} color="#336749"/>
-                </View>
+                <Pressable style={styles.round}
+                    onPress={() => {
+                        navigation.navigate("hotel")
+                    }}
+                    pressEffect={'ripple'}>
+                    <SvgXml xml={bedSVG} width="25" height="25" />
+                </Pressable>
                 <Text style={styles.menuText}>Hotels</Text>
             </View>
+
             {/*........menu items..........*/}
             <View style={styles.menuitems}>
-                <View style={styles.round}>
-                    <Ionicons name='train-outline' size={24} color="#336749"/>
-                </View>
+                <Pressable style={styles.round}
+                    onPress={() => {
+                        navigation.navigate("train")
+                    }}
+                    pressEffect={'ripple'}>
+                    <SvgXml xml={trainSVG} width="25" height="25" />
+                </Pressable>
                 <Text style={styles.menuText}>Train</Text>
             </View>
+
             {/*........menu items..........*/}
             <View style={styles.menuitems}>
-                <View style={styles.round}>
-                    <Ionicons name='bus-outline' size={24} color="#336749"/>
-                </View>
+                <Pressable style={styles.round}
+                    onPress={() => {
+                        navigation.navigate("bus")
+                    }}
+                    pressEffect={'ripple'}>
+                    <SvgXml xml={busSVG} width="25" height="25" />
+                </Pressable>
                 <Text style={styles.menuText}>Bus</Text>
             </View>
 
@@ -41,38 +66,43 @@ const MenuItems = () => {
 }
 export default MenuItems
 const styles = StyleSheet.create({
-    menu:{
+    menu: {
+        position: 'relative',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        gap: 40,
         alignItems: 'center',
         width: wp('90%'),
-        height: hp('5%'),
+        height: hp('10%'),
         padding: wp('2%'),
-        marginTop: hp('2.5%'),
+        marginTop: 30,
         marginRight: wp('5%'),
-    },
-    menuitems:{
-        width: wp('17%'),
-        height: hp('5%'),
-        padding: wp('2%'),
-        marginRight: wp('4%'),
-        marginLeft: wp('3%'),
-        flexDirection: 'column',
+        marginLeft: wp('5%'),
+
 
     },
-    round:{
-        borderRadius: 100,
+    menuitems: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        gap: 5,
+
+
+    },
+    round: {
+        borderRadius: 20,
         backgroundColor: '#ffffff',
         width: wp('12%'),
         height: wp('12%'),
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: wp('1%'),
+        boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.42)',
     },
-    menuText:{
-        fontSize:13,
-        marginTop:hp('1%'),
-        color:'white',
-        fontWeight:'bold',
-        textAlign:'center',
+    menuText: {
+        fontSize: 13,
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 })
