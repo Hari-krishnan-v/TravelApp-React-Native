@@ -5,32 +5,53 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-nat
 import Colors from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
 import TypeWriter from "@sucho/react-native-typewriter";
-
+interface HeadProps {
+    title?: string
+}
 // @ts-ignore
-const Header = () => {
-    const navigation = useNavigation()
+const Header =  ({ title }: HeadProps) => {
+    const navigation = useNavigation();
+    let currentDate = new Date().getMonth();
+    const textArray= currentDate==11?([
+        'Hello User',
+        '🎄 Merry Christmas! 🎁',
+        "See the World",
+        "Adventure Awaits"
+    ]):([
+        'Hello User',
+        'To travel is to live.',
+        'To travel is to live.',
+        "Adventure Awaits"])
     return (
+        // <View style={styles.header}>
+        //     <View style={styles.userInfo}>
+        //         <TypeWriter
+        //             textArray={textArray}
+        //             loop={true}
+        //             speed={120}
+        //             delay={1500}
+        //             textStyle={styles.headerText}
+        //             cursorStyle={styles.typeWriterCursorText}
+        //         />
+        //
+        //     </View>
+        //     <Ionicons onPress={() => {
+        //         // @ts-ignore
+        //         navigation.navigate("settings")
+        //     }} name="person-circle" size={50} color="darkgray" />
+        // </View>
         <View style={styles.header}>
-            <View style={styles.userInfo}>
-                <TypeWriter
-                    textArray={[
-                        'Hello User',
-                        '🎄 Merry Christmas! 🎁',
-                        "See the World",
-                        "Adventure Awaits"
-                    ]}
-                    loop={true}
-                    speed={120}
-                    delay={1500}
-                    textStyle={styles.headerText}
-                    cursorStyle={styles.typeWriterCursorText}
-                />
-
-            </View>
-            <Ionicons onPress={() => {
-                // @ts-ignore
-                navigation.navigate("settings")
-            }} name="person-circle" size={50} color="darkgray" />
+            <Ionicons name="menu" size={45} color={Colors.light.text.grey} />
+            <Text style={styles.headerText}>{title}</Text>
+            <Ionicons
+                onPress={() => {
+                    // @ts-ignore
+                    navigation.navigate("settings");
+                }}
+                name="person-circle"
+                size={50}
+                color="darkgray"
+            />
         </View>
     )
 }
@@ -40,23 +61,37 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: wp('3%'),
-        marginLeft: wp('2%'),
-        marginRight: wp('2%'),
-        marginTop: hp('5%'),
-        borderRadius: 20,
+        marginHorizontal: 20,
+        marginTop: 10,
     },
+    headerText: {
+        fontSize: 22,
+        fontWeight: 'semibold',
+        color: Colors.light.text.grey,
+        fontFamily: 'Poppins-SemiBold',
+    },
+
+    // header: {
+    //     flexDirection: 'row',
+    //     justifyContent: 'space-between',
+    //     alignItems: 'center',
+    //     padding: wp('3%'),
+    //     marginLeft: wp('2%'),
+    //     marginRight: wp('2%'),
+    //     marginTop: hp('5%'),
+    //     borderRadius: 20,
+    // },
     userInfo: {
         flexDirection: 'column',
     },
-    headerText: {
-        justifyContent: "flex-start",
-        color: '#121212',
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginRight: wp('2%'),
-
-    },
+    // headerText: {
+    //     justifyContent: "flex-start",
+    //     color: '#121212',
+    //     fontSize: 24,
+    //     fontWeight: 'bold',
+    //     marginRight: wp('2%'),
+    //
+    // },
     coins: {
         display: 'flex',
         flexDirection: 'row',

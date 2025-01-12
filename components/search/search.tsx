@@ -1,9 +1,10 @@
-import { StyleSheet, Text, TextInput, View, FlatList, TouchableOpacity } from 'react-native';
+import {StyleSheet, Text, TextInput, View, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
 import React, { useState } from 'react';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import axios from "axios";
-import { debounce } from 'lodash'; // Import lodash debounce function
+import { debounce } from 'lodash';
+import Autocomplete from "react-native-autocomplete-input"; // Import lodash debounce function
 
 interface SearchProps {
     placeholder?: string;
@@ -49,26 +50,36 @@ const SearchComponent = ({ placeholder }: SearchProps) => {
     );
 
     return (
-        <View style={styles.searchContainer}>
-            <Ionicons name="search-outline" size={24} color="black" />
-            <TextInput
-                style={styles.searchInput}
-                placeholder={placeholder}
-                value={input}
-                onChangeText={handleChangeText}
-            />
-            {isLoading && <Text style={styles.loadingText}>Loading...</Text>}
-            {error && <Text style={styles.errorText}>{error}</Text>}
-            {data.length > 0 && (
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item: any) => item.id ? item.id.toString() : item.city}  // Ensure to use a unique key
-                    style={styles.suggestionsList}
-                    keyboardShouldPersistTaps="handled"  // Ensures that taps on the list items do not dismiss the keyboard
-                />
-            )}
-        </View>
+
+        <Autocomplete
+            disablePortal
+            options={data}
+            sx={{ width: 300 }}
+            renderInput={(params) => <TextInput {...params}  onChangeText={handleChangeText}  />}
+        />
+
+        // <View style={styles.searchContainer}>
+        //     <Ionicons name="search-outline" size={24} color="black" />
+        //     <TextInput
+        //         style={styles.searchInput}
+        //         placeholder={placeholder}
+        //         value={input}
+        //         onChangeText={handleChangeText}
+        //
+        //     />
+        //     {isLoading && <ActivityIndicator/>}
+        //
+        //     {data.length > 0 && (
+        //         <FlatList
+        //             data={data}
+        //
+        //             renderItem={renderItem}
+        //             keyExtractor={(item: any) => item.id ? item.id.toString() : item.city}  // Ensure to use a unique key
+        //             style={styles.suggestionsList}
+        //             keyboardShouldPersistTaps="handled"  // Ensures that taps on the list items do not dismiss the keyboard
+        //         />
+        //     )}
+        // </View>
     );
 };
 

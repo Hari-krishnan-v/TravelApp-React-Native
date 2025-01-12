@@ -69,17 +69,14 @@ const styles = StyleSheet.create({
     menu: {
         position: 'relative',
         flexDirection: 'row',
-        justifyContent: 'center',
-        gap: 40,
+        justifyContent: 'space-between',
         alignItems: 'center',
         width: wp('90%'),
         height: hp('10%'),
-        padding: wp('2%'),
-        marginTop: 30,
+        paddingHorizontal:10,
+        marginTop: 20,
         marginRight: wp('5%'),
         marginLeft: wp('5%'),
-
-
     },
     menuitems: {
         justifyContent: 'center',

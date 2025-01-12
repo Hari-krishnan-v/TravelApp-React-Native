@@ -9,7 +9,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Colors from "@/constants/Colors";
 import { TabView, SceneMap } from 'react-native-tab-view';
 
-
 type RouteParams = {
   image: string;
   title: string;
@@ -37,19 +36,40 @@ const TripDetail = () => {
     video: VideoScreen,
   });
 
+  // Custom TabBar
+  const renderTabBar = (props: any) => (
+      <View style={styles.tabBarContainer}>
+        {props.navigationState.routes.map((route: any, index: number) => (
+            <Pressable
+                key={index}
+                onPress={() => props.jumpTo(route.key)}
+                style={[
+                  styles.tabButton,
+                  {
+                    backgroundColor: index === props.navigationState.index ? Colors.light.primary : 'transparent',
+                  },
+                ]}
+            >
+              <Text
+                  style={[
+                    styles.tabButtonText,
+                    {
+                      color: index === props.navigationState.index ? Colors.light.icon : 'black',
+                    },
+                  ]}
+              >
+                {route.title}
+              </Text>
+            </Pressable>
+        ))}
+      </View>
+  );
+
   return (
       <View style={styles.container}>
         <StatusBar style="auto" />
-
-        <Animated.View
-            entering={FlipInXDown.duration(400).easing(Easing.inOut(Easing.quad))}
-            style={styles.imageContainer}
-        >
-          <ImageBackground
-              source={{ uri: image }}
-              style={styles.image}
-              resizeMode="cover"
-          >
+        <Animated.View entering={FlipInXDown.duration(400).easing(Easing.inOut(Easing.quad))} style={styles.imageContainer}>
+          <ImageBackground source={{ uri: image }} style={styles.image} resizeMode="cover">
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 50 }}>
               <Pressable onPress={() => navigation.goBack()} style={styles.goBackButton}>
                 <Ionicons name="chevron-back-circle" size={30} color="white" opacity={0.6} />
@@ -62,27 +82,33 @@ const TripDetail = () => {
         </Animated.View>
 
         <View style={styles.subContainer}>
+          <View style={{paddingHorizontal:30,paddingTop:30}}>
           <Text style={styles.title}>{title}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 10 }}>
             <Ionicons name="location" size={20} color={Colors.light.icon} />
-            <Text style={{ fontSize: 12, color: Colors.light.text.grey }}>{location}</Text>
+            <Text style={{ fontSize: 15, color: Colors.light.text.grey }}>{location}</Text>
           </View>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 10 }}>
-            <Text style={{ fontSize: 12, color: Colors.light.text.grey }}>4.8</Text>
-            <Ionicons name="star" size={12} color={Colors.light.icon} />
-            <Ionicons name="star" size={12} color={Colors.light.icon} />
-            <Ionicons name="star" size={12} color={Colors.light.icon} />
-            <Ionicons name="star" size={12} color={Colors.light.icon} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 }}>
+            <Text style={{ fontSize: 15, color: Colors.light.text.grey }}>4.8</Text>
+            <Ionicons name="star" size={15} color={Colors.light.icon} />
+            <Ionicons name="star" size={15} color={Colors.light.icon} />
+            <Ionicons name="star" size={15} color={Colors.light.icon} />
+            <Ionicons name="star" size={15} color={Colors.light.icon} />
+            <Ionicons name="star" size={15} color={Colors.light.icon} />
           </View>
-
+          </View>
           {/* Tab View Component */}
           <TabView
               navigationState={{ index, routes }}
               renderScene={renderScene}
-              style={{marginTop: 30}}
+              style={{ marginTop: 30 }}
               onIndexChange={setIndex}
               initialLayout={{ width: widthPercentageToDP('100%') }}
+              renderTabBar={renderTabBar} // Use the custom TabBar here
           />
+          <Pressable style={styles.button}>
+            <Text style={{ textAlign: 'center', fontFamily: 'Poppins-Bold', color: 'white', fontSize: 18 }}>Save a Trip</Text>
+          </Pressable>
         </View>
       </View>
   );
@@ -91,14 +117,14 @@ const TripDetail = () => {
 // Placeholder screens for each tab
 const AboutScreen = () => {
   const route = useRoute();
-  const { description} = route.params as RouteParams;
-  return(
+  const { description } = route.params as RouteParams;
+  return (
       <View style={styles.tabContainer}>
         <Text style={styles.tabContentHead}>Description</Text>
         <Text style={styles.tabContent}>{description}</Text>
       </View>
-  )
-}
+  );
+};
 
 const ReviewScreen = () => (
     <View style={styles.tabContainer}>
@@ -143,7 +169,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: heightPercentageToDP('60%'),
     backgroundColor: 'white',
-    padding: 30,
     borderRadius: 35,
     position: 'absolute',
     bottom: -10,
@@ -152,11 +177,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
     color: Colors.light.text.black,
   },
   tabContainer: {
     flex: 1,
     flexDirection: 'column',
+    paddingHorizontal: 20,
   },
   tabContentHead: {
     fontSize: 16,
@@ -169,7 +196,34 @@ const styles = StyleSheet.create({
     color: Colors.light.text.grey,
     marginTop: 10,
     lineHeight: 25,
-  }
+  },
+  button: {
+    height: 48,
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 13,
+    marginBottom:30,
+    marginHorizontal:"auto",
+    backgroundColor: '#F36D72',
+  },
+  // Custom TabBar Styles
+  tabBarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    borderBottomWidth:0.5,
+    borderBottomColor: Colors.light.text.grey,
+  },
+  tabButton: {
+    paddingVertical: 5,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  tabButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 export default TripDetail;

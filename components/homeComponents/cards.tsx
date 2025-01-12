@@ -58,7 +58,7 @@ const HotelCard = () => {
     return (
         <View style={styles.HotelContainer}>
             <ImageBackground source={room1}
-                style={{ justifyContent: 'center', height: hp('10%'), width: wp('35%'), borderRadius: 20 }} />
+                style={{ justifyContent: 'center', height: hp('10%'), width: wp('35%'), borderRadius: 13 }} />
             <View style={{ flexDirection: 'column', padding: 10, gap: 5 }}>
                 <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#336749',fontFamily:'Poppins-Medium' }}>Haze and Kites Munnar</Text>
                 <View style={{ flexDirection: 'row', gap: 5 }}>
@@ -118,6 +118,6 @@ const styles = StyleSheet.create({
         marginTop: hp('1%'),
         marginBottom: hp('1%'),
         overflow: 'hidden',
-        borderRadius: 20,
+        borderRadius: 13,
     }
 })

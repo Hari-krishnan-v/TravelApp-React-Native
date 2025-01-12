@@ -20,7 +20,7 @@ const Settings = () => {
         <SafeAreaView style={styles.container}>
             <StatusBar style="dark" />
             <HeadWithBack title="Settings and Privacy" />
-            <SearchComponent placeholder={"Search"} />
+            {/*<SearchComponent placeholder={"Search"} />*/}
             <View>
 
                 <Text>Email: {user.email}</Text>

@@ -4,7 +4,7 @@
     "slug": "travelwithus",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/t.png",
+    "icon": "./assets/images/TraveWithUsIcon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/t.png",
+        "foregroundImage": "./assets/images/TraveWithUsIcon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.harikrishnan_123.travelwithus"
@@ -21,14 +21,14 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/t.png"
+      "favicon": "./assets/images/TraveWithUsIcon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/t.png",
+          "image": "./assets/images/TraveWithUsIcon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"

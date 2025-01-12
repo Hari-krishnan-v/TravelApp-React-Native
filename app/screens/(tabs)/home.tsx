@@ -8,58 +8,30 @@ import MenuItems from "@/components/homeComponents/menuitems";
 import Colors from "@/constants/Colors";
 import { cardData } from '@/cardData';
 import Header from "@/components/homeComponents/header";
-import Autocomplete from 'react-native-autocomplete-input';
-import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { Easing, useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
+
+import Animated, {  useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
 import {Pressable} from "@react-native-material/core";
 import {useNavigation} from "@react-navigation/native";
 
 const Home = () => {
     const [refreshing, setRefreshing] = React.useState(false);
-    const [points, setPoints] = React.useState(0);
-    const [statusbarbg, setstatusbarbg] = React.useState('rgba(0,0,0,0.0)');
-    const [statusColor, setstatusColor] = React.useState('light')
-    const [suggestions, setSuggestions] = React.useState([])
-    const [search, setSearch] = React.useState('')
     const navigation = useNavigation();
-
-
     const slideAnim = useSharedValue(-100);
-
     useEffect(() => {
         // Trigger the animation on mount
-
         slideAnim.value = withSpring(0, { duration: 1000, }); // Slide-up effect
     }, []);
-
-
-
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        setPoints(points => points + 1);
         setTimeout(() => {
             setRefreshing(false);
         }, 2000);
     }, []);
     const Status = false;
-    const handleScroll = (event: any) => {
-        const yOffset = event.nativeEvent.contentOffset.y;
-        if (yOffset > 25) {
-            setstatusbarbg('white')
-            setstatusColor('dark')
-        }
-        else {
-            setstatusbarbg('rgba(0,0,0,0.0)')
-            setstatusColor('light')
-        }
-
-    }
-
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar  style='dark' backgroundColor={Colors.light.background}/>
             <ScrollView  horizontal={false}
-                         onScroll={handleScroll} // Attach the onScroll event handler
                          scrollEventThrottle={16}
                          refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -69,13 +41,13 @@ const Home = () => {
                 }}>
                     <View>
                         {/*header section*/}
-                        <Header/>
+                        <Header title={"Home"}/>
+
                         {/*search option*/}
                         <Pressable style={styles.searchContainer} onPress={() => {
                             // @ts-ignore
                             navigation.navigate('search')
-
-                        }}>
+                             }}>
                             <Ionicons name="search-outline" size={24} color="black" />
                             <Text style={styles.searchInput}  >Where to go?"</Text>
                         </Pressable>
@@ -85,8 +57,7 @@ const Home = () => {
 
                 {/*current status*/}
 
-                {
-                    Status && (
+                { Status && (
                         <View style={styles.statusContainer}>
                             <View style={styles.statusRow1}>
                                 <Text style={styles.statusRow1Text}>Upcoming</Text>
@@ -133,8 +104,10 @@ const Home = () => {
 
 
                 <View style={styles.places}>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Let’s Explore Together </Text>
-                    <Text style={{color:Colors.light.text.grey}} >See all</Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.icon }}>All </Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Popular </Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Nearby </Text>
+                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Recommended </Text>
                 </View>
 
                 {/*.............cards..............*/}
@@ -188,13 +161,11 @@ export default Home;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
+        paddingTop: 30,
         backgroundColor: Colors.light.background,
-        gap: 10,
     },
 
     searchContainer: {
-        position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',
         width: wp('90%'),
@@ -203,6 +174,7 @@ const styles = StyleSheet.create({
         padding: wp('2%'),
         marginRight: wp('5%'),
         marginLeft: wp('5%'),
+        marginTop:20,
         borderWidth: 1,
         borderColor: '#DFDFDF',
         backgroundColor: '#fff',

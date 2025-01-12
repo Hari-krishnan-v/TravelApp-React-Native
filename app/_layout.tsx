@@ -14,10 +14,11 @@ import settings from "@/app/screens/settings/settings";
 import flight from "@/app/screens/flight/flight";
 import hotel from "@/app/screens/hotel/hotel";
 import train from "@/app/screens/train/train";
-import bus from "@/app/screens/bus/bus"; // Import the trip detail screen
+import bus from "@/app/screens/bus/bus";
 import {AuthProvider} from "@/store/authContext";
-import SearchScreen from "@/app/screens/search/searchScreen";
+import SearchScreen from "@/app/screens/(tabs)/searchScreen";
 import {ActivityIndicator} from "react-native";
+import Explorer from "@/app/screens/(tabs)/explorer";
 
 const Stack = createSharedElementStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,7 +34,6 @@ const _layout = () => {
         return <ActivityIndicator size="large" color="#0000ff" />;
     }
 
-    const isAuthenticated = true
     const config = {
         animation: 'spring',
         config: {
@@ -60,7 +60,6 @@ const _layout = () => {
                 <Stack.Screen name={"hotel"} component={hotel} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"train"} component={train} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"bus"} component={bus} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
-                <Stack.Screen name={"search"} component={SearchScreen} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
             </Stack.Navigator>
             </AuthProvider>
         );
@@ -88,6 +87,14 @@ const TabNavigator = () => {
                 }}
             />
             <Tab.Screen
+                name="search"
+                component={SearchScreen}
+                options={{
+                    headerShown: false,
+                    title: 'Search',
+                }}
+            />
+            <Tab.Screen
                 name="newTrip"
                 component={NewTrip}
                 options={{
@@ -95,6 +102,15 @@ const TabNavigator = () => {
                     title: 'New Trip',
                 }}
             />
+            <Tab.Screen
+                name="explore"
+                component={Explorer}
+                options={{
+                    headerShown: false,
+                    title: 'Explore',
+                }}
+            />
+
             <Tab.Screen
                 name="account"
                 component={Account}

@@ -13,7 +13,7 @@ const Hotel = () => {
     useEffect(() => {
         const fetchHotelData = async () => {
             try {
-                const response = await axios.get('http://192.168.1.2:8000/accommodation/hotel-list/hotels/');
+                const response = await axios.get('http://172.16.5.229:8000/accommodation/hotel-list/hotels/');
                 setHotelData(response.data);
             } catch (error) {
                 setError(error.message);
