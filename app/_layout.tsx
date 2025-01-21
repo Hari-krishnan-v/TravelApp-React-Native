@@ -19,6 +19,7 @@ import {AuthProvider} from "@/store/authContext";
 import SearchScreen from "@/app/screens/(tabs)/searchScreen";
 import {ActivityIndicator} from "react-native";
 import Explorer from "@/app/screens/(tabs)/explorer";
+import Category from "@/app/screens/category/category";
 
 const Stack = createSharedElementStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,6 +61,7 @@ const _layout = () => {
                 <Stack.Screen name={"hotel"} component={hotel} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"train"} component={train} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
                 <Stack.Screen name={"bus"} component={bus} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
+                <Stack.Screen name={"category"} component={Category} options={{ headerShown: false, transitionSpec: { open: config, close: config, }, }} />
             </Stack.Navigator>
             </AuthProvider>
         );

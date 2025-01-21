@@ -12,7 +12,7 @@ const Train = () => {
     useEffect(() => {
         const fetchTrainData = async () => {
             try {
-                const response = await axios.get('http://192.168.1.2:8000/transportation/train-list/trains/');
+                const response = await axios.get('https://travelwithus.pythonanywhere.com/transportation/train-list/trains/');
                 setTrainData(response.data);  // Store the response data
             } catch (error) {
                 setError(error.message);  // If an error occurs, store the error message

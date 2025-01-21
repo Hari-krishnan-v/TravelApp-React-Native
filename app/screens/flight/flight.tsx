@@ -12,7 +12,7 @@ const Flight = () => {
     useEffect(() => {
         const fetchFlightData = async () => {
             try {
-                const response = await axios.get('http://192.168.1.2:8000/transportation/flight-list/flights/');
+                const response = await axios.get('https://travelwithus.pythonanywhere.com/transportation/flight-list/flights/');
                 setFlightData(response.data);
             } catch (error) {
                 setError(error.message);

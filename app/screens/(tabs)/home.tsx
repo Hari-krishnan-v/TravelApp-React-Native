@@ -1,17 +1,18 @@
-import { SafeAreaView, StyleSheet, View, Text, TextInput, ScrollView, RefreshControl, } from 'react-native';
-import React, { useEffect } from 'react';
-import { StatusBar } from "expo-status-bar";
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {SafeAreaView, StyleSheet, View, Text, TextInput, ScrollView, RefreshControl,} from 'react-native';
+import React, {useEffect} from 'react';
+import {StatusBar} from "expo-status-bar";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import Cards, { HotelCard } from "@/components/homeComponents/cards";
+import Cards, {HotelCard} from "@/components/homeComponents/cards";
 import MenuItems from "@/components/homeComponents/menuitems";
 import Colors from "@/constants/Colors";
-import { cardData } from '@/cardData';
+import {cardData} from '@/cardData';
 import Header from "@/components/homeComponents/header";
-
-import Animated, {  useSharedValue, withDelay, withSpring, withTiming } from "react-native-reanimated";
+import Animated, {useSharedValue, withSpring} from "react-native-reanimated";
 import {Pressable} from "@react-native-material/core";
 import {useNavigation} from "@react-navigation/native";
+import {HomeTabView} from "@/components/tabBar";
+import {LinearGradient} from "expo-linear-gradient";
 
 const Home = () => {
     const [refreshing, setRefreshing] = React.useState(false);
@@ -19,7 +20,7 @@ const Home = () => {
     const slideAnim = useSharedValue(-100);
     useEffect(() => {
         // Trigger the animation on mount
-        slideAnim.value = withSpring(0, { duration: 1000, }); // Slide-up effect
+        slideAnim.value = withSpring(0, {duration: 1000,}); // Slide-up effect
     }, []);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
@@ -30,126 +31,47 @@ const Home = () => {
     const Status = false;
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar  style='dark' backgroundColor={Colors.light.background}/>
-            <ScrollView  horizontal={false}
-                         scrollEventThrottle={16}
-                         refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
+            <StatusBar style='dark' backgroundColor={Colors.light.background}/>
+            <LinearGradient style={{position: "absolute", bottom: 0, zIndex: 100, width: "100%", height: hp("20%")}}
+                            colors={["rgba(255,255,255,0)", "rgb(255,255,255)"]}/>
+            <ScrollView horizontal={false} scrollEventThrottle={16}
+                        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Animated.View style={{ // Apply fade-in effect
-                    transform: [{ translateY: slideAnim }]
+                    transform: [{translateY: slideAnim}]
                 }}>
                     <View>
                         {/*header section*/}
-                        <Header title={"Home"}/>
+                        <Header/>
 
                         {/*search option*/}
                         <Pressable style={styles.searchContainer} onPress={() => {
                             // @ts-ignore
                             navigation.navigate('search')
-                             }}>
-                            <Ionicons name="search-outline" size={24} color="black" />
-                            <Text style={styles.searchInput}  >Where to go?"</Text>
+                        }}>
+                            <Ionicons name="search-outline" size={24} color="black"/>
+                            <Text style={styles.searchInput}> Where to go? </Text>
                         </Pressable>
                     </View>
                 </Animated.View>
 
 
-                {/*current status*/}
-
-                { Status && (
-                        <View style={styles.statusContainer}>
-                            <View style={styles.statusRow1}>
-                                <Text style={styles.statusRow1Text}>Upcoming</Text>
-                                <Text style={styles.statusRow1Text2}>24 March 2024</Text>
-                            </View>
-
-                            {/* Status row 2 */}
-                            <View style={styles.statusRow2}>
-                                <View style={styles.statusRow2container1}>
-                                    <Text style={styles.statusRow2container1Text1}>Start At</Text>
-                                    <Text style={styles.statusRow2container1Text1}>05:30</Text>
-                                </View>
-                                <View style={styles.statusRow2container2}>
-                                    <Ionicons name="bus" size={30} color="black" />
-                                </View>
-                                <View style={styles.statusRow2container3}>
-                                    <Text>---------------------{'>'} </Text>
-                                    <Text style={{ marginLeft: wp(5) }}>10:00</Text>
-                                </View>
-                                <View style={styles.statusRow2container1}>
-                                    <Text style={styles.statusRow2container1Text1}>Start At</Text>
-                                    <Text style={styles.statusRow2container1Text1}>05:30</Text>
-                                </View>
-                                <View style={styles.statusRow2container2}>
-                                    <Ionicons name="bus" size={30} color="black" />
-                                </View>
-                            </View>
-
-                            {/* Status row 3 */}
-                            <View style={styles.statusRow3}>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Booking ID</Text>
-                                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>ZEEBAW</Text>
-                            </View>
-                        </View>
-                    )
-                }
-
-
                 {/*..............menu..............*/}
 
-                <MenuItems />
+                <MenuItems/>
 
                 {/*..............menu End..............*/}
+                <HomeTabView/>
 
-
-                <View style={styles.places}>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.icon }}>All </Text>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Popular </Text>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Nearby </Text>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.light.text.black }}>Recommended </Text>
-                </View>
-
-                {/*.............cards..............*/}
-
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false} >
-                    <View
-                        style={
-                            styles.cardContainer} >
-                        {cardData.map((data) => (
-                            <Cards
-                                key={data.id}
-                                image={data.image}
-                                title={data.title}
-                                description={data.description}
-                                location={data.location}
-                            />
-                        ))}
-                    </View>
-                </ScrollView>
 
                 {/*.............End cards..............*/}
-
-
                 <View style={styles.row}>
-                    <Text style={{fontFamily:'Poppins-Bold', fontSize: 16, fontWeight: 'bold', color: Colors.dark }}>Hotels recomendation for you</Text>
-                    <Text style={{ color: Colors.seeAll }}>See all</Text>
+                    <Text style={{fontFamily: 'Poppins-Medium', fontSize: 18, color: Colors.dark}}>Top Place</Text>
+                    <Text style={{color: Colors.seeAll}}>See all</Text>
                 </View>
                 {/*    hotels cards*/}
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
-                <HotelCard />
+                <HotelCard/>
+                <HotelCard/>
+                <HotelCard/>
             </ScrollView>
 
         </SafeAreaView>
@@ -161,7 +83,7 @@ export default Home;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 30,
+        paddingTop: 40,
         backgroundColor: Colors.light.background,
     },
 
@@ -174,7 +96,7 @@ const styles = StyleSheet.create({
         padding: wp('2%'),
         marginRight: wp('5%'),
         marginLeft: wp('5%'),
-        marginTop:20,
+        marginTop: 20,
         borderWidth: 1,
         borderColor: '#DFDFDF',
         backgroundColor: '#fff',
@@ -182,7 +104,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     searchInput: {
-        fontSize:14,
+        fontSize: 14,
         color: Colors.light.text.grey,
         marginLeft: wp('2%'),
 

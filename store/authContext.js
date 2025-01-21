@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import { auth } from '@/firebaseConfig';  // Import your firebaseConfig
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth';
 import axios from "axios";  // Import axios
+import * as Location from 'expo-location';  // Import expo-location
 
 // Create the AuthContext
 const AuthContext = createContext();
@@ -16,6 +17,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);  // To store the authenticated user
     const [loading, setLoading] = useState(true);  // To manage loading state
     const [error, setError] = useState(null);  // To handle errors
+    const [location, setLocation] = useState(null);  // To store the current location
+    const [locationError, setLocationError] = useState(null);  // To handle location errors
 
     // Firebase onAuthStateChanged listener
     useEffect(() => {
@@ -32,43 +35,62 @@ export const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
+    // Get the device's location when the app loads or when the user logs in
+    useEffect(() => {
+        (async () => {
+            // Request location permission and get the location
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setLocationError('Permission to access location was denied');
+                return;
+            }
+
+            const locationData = await Location.getCurrentPositionAsync({});
+            let address = await Location.reverseGeocodeAsync(locationData.coords);
+            if (address.length > 0) {
+                setLocation(address[0]);
+            }
+    // Store the location in state
+        })();
+    }, [user]);  // Run this effect when the user state changes
+
     // Send email and password to Django backend for registration or login
-    const sendToBackend = async (email, password, isSignUp = false) => {
-        try {
-            const url = isSignUp
-                ? 'http://192.168.1.2:8000/users/register/'  // URL for registration
-                : 'http://192.168.1.2:8000/users/login/';   // URL for login
-
-            const payload = { email, password };  // Send email and password
-
-            // Debug: Log the payload and headers
-            console.log('Sending request to backend with the following payload:', payload);
-
-            const response = await axios.post(url, payload, {
-                headers: {
-                    'Content-Type': 'application/json',  // Make sure to use raw JSON
-                }
-            });
-
-            if (response.data.success) {
-                console.log('User successfully authenticated or registered on Django');
-            } else {
-                console.log('Failed to authenticate user on Django');
-            }
-        } catch (error) {
-            if (error.response) {
-                // Print the error from the response to understand what's wrong
-                console.error('Error response from backend:', error.response.data);
-                setError(`Authentication failed: ${error.response.data.detail || error.response.data.error || error.response.data}`);
-            } else if (error.request) {
-                console.error('No response from backend:', error.request);
-                setError('No response from backend.');
-            } else {
-                console.error('Error sending request:', error.message);
-                setError('Request error occurred.');
-            }
-        }
-    };
+    // const sendToBackend = async (email, password, isSignUp = false) => {
+    //     try {
+    //         const url = isSignUp
+    //             ? 'http://192.168.1.2:8000/users/register/'  // URL for registration
+    //             : 'http://192.168.1.2:8000/users/login/';   // URL for login
+    //
+    //         const payload = { email, password };  // Send email and password
+    //
+    //         // Debug: Log the payload and headers
+    //         console.log('Sending request to backend with the following payload:', payload);
+    //
+    //         const response = await axios.post(url, payload, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',  // Make sure to use raw JSON
+    //             }
+    //         });
+    //
+    //         if (response.data.success) {
+    //             console.log('User successfully authenticated or registered on Django');
+    //         } else {
+    //             console.log('Failed to authenticate user on Django');
+    //         }
+    //     } catch (error) {
+    //         if (error.response) {
+    //             // Print the error from the response to understand what's wrong
+    //             console.error('Error response from backend:', error.response.data);
+    //             setError(`Authentication failed: ${error.response.data.detail || error.response.data.error || error.response.data}`);
+    //         } else if (error.request) {
+    //             console.error('No response from backend:', error.request);
+    //             setError('No response from backend.');
+    //         } else {
+    //             console.error('Error sending request:', error.message);
+    //             setError('Request error occurred.');
+    //         }
+    //     }
+    // };
 
     // Sign in with email and password
     const signInWithEmail = async (email, password) => {
@@ -79,7 +101,7 @@ export const AuthProvider = ({ children }) => {
             const user = userCredential.user;
 
             // Now send email and password to Django backend for login
-            await sendToBackend(email, password, false);  // false indicates login request
+            // await sendToBackend(email, password, false);  // false indicates login request
 
             setError(null);  // Clear any previous errors
         } catch (err) {
@@ -98,7 +120,7 @@ export const AuthProvider = ({ children }) => {
             const user = userCredential.user;
 
             // Now send email and password to Django backend for registration
-            await sendToBackend(email, password, true);  // true indicates signup request
+            // await sendToBackend(email, password, true);  // true indicates signup request
 
             setError(null);  // Clear any previous errors
         } catch (err) {
@@ -125,6 +147,8 @@ export const AuthProvider = ({ children }) => {
         user,
         loading,
         error,
+        location,
+        locationError,
         signInWithEmail,
         signUpWithEmail,
         logout,

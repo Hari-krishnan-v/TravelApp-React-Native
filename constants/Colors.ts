@@ -25,7 +25,7 @@ const tintColorDark = '#fff';
     },
     background: '#F6F6F6',
     tint: tintColorLight,
-    icon: '#EE684A',
+    icon: 'red',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
   },

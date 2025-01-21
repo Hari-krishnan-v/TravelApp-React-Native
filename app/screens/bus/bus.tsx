@@ -12,7 +12,7 @@ const Bus = () => {
     useEffect(() => {
         const fetchBusData = async () => {
             try {
-                const response = await axios.get('http://192.168.1.2:8000/transportation/bus-list/buses/');
+                const response = await axios.get('https://travelwithus.pythonanywhere.com/transportation/bus-list/buses/');
                 setBusData(response.data);
             } catch (error) {
                 // @ts-ignore

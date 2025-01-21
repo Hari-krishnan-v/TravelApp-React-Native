@@ -21,7 +21,7 @@ const SearchComponent = ({ placeholder }: SearchProps) => {
         if (text.length > 3) {
             setIsLoading(true);
             try {
-                const resp = await axios.get(`http://192.168.1.2:8000/location/locations/?search=${text}`);
+                const resp = await axios.get(`https://travelwithus.pythonanywhere.com/location/locations/?search=${text}`);
                 setData(resp.data); // Assuming the response is an array of cities or locations
                 setError('');
             } catch (error) {

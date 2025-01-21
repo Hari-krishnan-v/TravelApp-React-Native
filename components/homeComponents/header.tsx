@@ -1,60 +1,77 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+    heightPercentageToDP as hp,
+    widthPercentageToDP,
+    widthPercentageToDP as wp
+} from "react-native-responsive-screen";
 import Colors from "@/constants/Colors";
 import { useNavigation } from "@react-navigation/native";
-import TypeWriter from "@sucho/react-native-typewriter";
+import { useAuth } from "@/store/authContext";
+import Animated, { Easing, FlipInXDown } from "react-native-reanimated";
+// @ts-ignore
+import backgroundImage from "@/assets/images/backgroundImage.jpg"
+import { Image } from 'expo-image';
+
 interface HeadProps {
     title?: string
 }
 // @ts-ignore
-const Header =  ({ title }: HeadProps) => {
+const Header = () => {
+    const { location, locationError } = useAuth()
+    const [locationName, setLocationName] = useState(null);
+
     const navigation = useNavigation();
-    let currentDate = new Date().getMonth();
-    const textArray= currentDate==11?([
-        'Hello User',
-        '🎄 Merry Christmas! 🎁',
-        "See the World",
-        "Adventure Awaits"
-    ]):([
-        'Hello User',
-        'To travel is to live.',
-        'To travel is to live.',
-        "Adventure Awaits"])
+    const handleSettingOpen = () => {
+        navigation.navigate("settings")
+    }
     return (
-        // <View style={styles.header}>
-        //     <View style={styles.userInfo}>
-        //         <TypeWriter
-        //             textArray={textArray}
-        //             loop={true}
-        //             speed={120}
-        //             delay={1500}
-        //             textStyle={styles.headerText}
-        //             cursorStyle={styles.typeWriterCursorText}
-        //         />
-        //
-        //     </View>
-        //     <Ionicons onPress={() => {
-        //         // @ts-ignore
-        //         navigation.navigate("settings")
-        //     }} name="person-circle" size={50} color="darkgray" />
-        // </View>
+            <View style={styles.header}>
+                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <Ionicons name="location" size={50} color={Colors.green} />
+                    {location ? (
+                        <Animated.View style={[styles.locationContainer]}>
+                            <Text style={styles.locationText} numberOfLines={1} ellipsizeMode="tail">
+                                {location.city}
+                            </Text>
+                            <Text style={styles.locationSubText} numberOfLines={1} ellipsizeMode="tail">
+                                {location.formattedAddress}
+                            </Text>
+                        </Animated.View>
+                    ) : (
+                        <Text style={styles.locationText}>Loading location...</Text>
+                    )}
+                </View>
+                <TouchableOpacity onPress={handleSettingOpen}>
+                    <Image source={backgroundImage} style={styles.userProfile} />
+                </TouchableOpacity>
+            </View>
+
+    )
+}
+
+export const DefaultHeader = ({ title }: HeadProps) => {
+    return (
         <View style={styles.header}>
-            <Ionicons name="menu" size={45} color={Colors.light.text.grey} />
+            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                <Ionicons name="menu" size={45} color="darkgray" />
+
+            </View>
             <Text style={styles.headerText}>{title}</Text>
             <Ionicons
                 onPress={() => {
                     // @ts-ignore
                     navigation.navigate("settings");
                 }}
-                name="person-circle"
+                name="person-circle-outline"
                 size={50}
                 color="darkgray"
             />
         </View>
     )
 }
+
 export default Header
 const styles = StyleSheet.create({
     header: {
@@ -62,7 +79,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         marginHorizontal: 20,
-        marginTop: 10,
+        marginTop: 15,
+
     },
     headerText: {
         fontSize: 22,
@@ -71,42 +89,35 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
     },
 
-    // header: {
-    //     flexDirection: 'row',
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',
-    //     padding: wp('3%'),
-    //     marginLeft: wp('2%'),
-    //     marginRight: wp('2%'),
-    //     marginTop: hp('5%'),
-    //     borderRadius: 20,
-    // },
+    locationText: {
+        fontSize: 25,
+        fontFamily: "Poppins-Bold",
+        color: Colors.green,
+        marginTop:-5
+    },
+    locationSubText: {
+        fontSize: 14,
+        marginTop:-10
+
+    },
     userInfo: {
         flexDirection: 'column',
     },
-    // headerText: {
-    //     justifyContent: "flex-start",
-    //     color: '#121212',
-    //     fontSize: 24,
-    //     fontWeight: 'bold',
-    //     marginRight: wp('2%'),
-    //
-    // },
-    coins: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        marginRight: wp('5%'),
-        marginTop: hp('1.5%'),
-        fontFamily:'Poppins-SemiBold'
+    userProfile: {
+        justifyContent: 'center',
+        height: hp('6%'),
+        width: wp('12.5%'),
+        overflow: "hidden",
+        borderRadius: 50,
+        borderColor: "white",
+        borderWidth: 5,
+        boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.3)',
     },
-    coinsText: {
-        marginLeft: wp('2%'),
-        fontSize: 14,
-        color: '#FFC107',
-    },
-    typeWriterCursorText: {
-        color: '#c2185b',
-        fontSize: 28,
+    locationContainer: {
+        display: "flex",
+        maxWidth: widthPercentageToDP("50%"),
+        flexDirection: "column",
+        // justifyContent: "center",
     }
+
 })

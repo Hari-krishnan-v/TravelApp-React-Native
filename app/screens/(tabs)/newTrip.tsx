@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button, TextInput, ActivityIndicator } from 'react-native';
-import { debounce } from 'lodash';
+import React, {useState, useCallback} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Button, TextInput, ActivityIndicator} from 'react-native';
+import {debounce} from 'lodash';
 import axios from 'axios';
 import Autocomplete from 'react-native-autocomplete-input';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Colors from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StatusBar } from 'expo-status-bar';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import Header from "@/components/homeComponents/header";
+import {StatusBar} from 'expo-status-bar';
+import {heightPercentageToDP as hp, widthPercentageToDP as wp} from "react-native-responsive-screen";
+import Header, {DefaultHeader} from "@/components/homeComponents/header";
 
 const TravelPlanForm: React.FC = () => {
     const [queryStart, setQueryStart] = useState('');
@@ -21,14 +21,13 @@ const TravelPlanForm: React.FC = () => {
     const [numberOfPeoples, setNumberOfoPeoples] = useState('');
     const navigation = useNavigation();
 
-
     // Debounced search function to prevent excessive API calls
     const debouncedSearchStart = debounce(async (text: string) => {
         if (text.length > 2) {
             setLoading(true);
             setError('');
             try {
-                const resp = await axios.get(`http://192.168.1.2:8000/location/locations/?search=${text}`);
+                const resp = await axios.get(`https://travelwithus.pythonanywhere.com/location/locations/?search=${text}`);
                 if (Array.isArray(resp.data)) {
                     setStartLocations(resp.data); // Assuming the response is an array of locations or cities
                 } else {
@@ -48,7 +47,7 @@ const TravelPlanForm: React.FC = () => {
             setLoading(true);
             setError('');
             try {
-                const resp = await axios.get(`http://192.168.1.2:8000/location/locations/?search=${text}`);
+                const resp = await axios.get(`https://travelwithus.pythonanywhere.com/location/locations/?search=${text}`);
                 if (Array.isArray(resp.data)) {
                     setDestinationLocations(resp.data); // Assuming the response is an array of locations or cities
                 } else {
@@ -85,39 +84,41 @@ const TravelPlanForm: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <StatusBar />
-            <Header title={"New Tripr"}/>
+            <StatusBar/>
+            <DefaultHeader title={"New Tripr"}/>
 
             <View style={styles.form}>
                 {/*.........starting location........*/}
                 <View style={styles.formItems}>
-                    <Text style={[styles.label,{marginBottom: 35}]}>Starting location</Text>
+                    <Text style={[styles.label]}>Starting location</Text>
                     <View style={styles.autocompleteContainer}>
-                        <Autocomplete
-                            data={StartLocation}
-                            defaultValue={queryStart}
-                            listContainerStyle={styles.suggestionList}
-                            // containerStyle={styles.inputContainer}
-                            inputContainerStyle={styles.inputField}
-                            style={styles.inputContainer}
-                            onChangeText={handleStartQueryChange}
-                            flatListProps={{
-                                renderItem: ({ item }) => (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            setQueryStart(item.city); // Set the selected location
-                                            setStartLocations([]); // Clear the suggestions after selecting
-                                        }}
-                                    >
+                        {/*<Autocomplete*/}
+                        {/*    data={StartLocation}*/}
+                        {/*    defaultValue={queryStart}*/}
+                        {/*    listContainerStyle={styles.suggestionList}*/}
+                        {/*    // containerStyle={styles.inputContainer}*/}
+                        {/*    inputContainerStyle={styles.inputField}*/}
+                        {/*    style={styles.inputContainer}*/}
+                        {/*    onChangeText={handleStartQueryChange}*/}
+                        {/*    flatListProps={{*/}
+                        {/*        renderItem: ({item}) => (*/}
+                        {/*            <TouchableOpacity*/}
+                        {/*                onPress={() => {*/}
+                        {/*                    setQueryStart(item.city); // Set the selected location*/}
+                        {/*                    setStartLocations([]); // Clear the suggestions after selecting*/}
+                        {/*                }}*/}
+                        {/*            >*/}
 
-                                        <Text style={styles.suggestionText}>{item.city}</Text>
-                                    </TouchableOpacity>
-                                ),
-                            }}
-                            placeholder="Enter starting location"
-                            autoCapitalize="none"
-                            autoCorrect={true}
-                        />
+                        {/*                <Text style={styles.suggestionText}>{item.city}</Text>*/}
+                        {/*            </TouchableOpacity>*/}
+                        {/*        ),*/}
+                        {/*    }}*/}
+                        {/*    placeholder="Enter starting location"*/}
+                        {/*    autoCapitalize="none"*/}
+                        {/*    autoCorrect={true}*/}
+                        {/*/>*/}
+                        <TextInput style={styles.inputContainer} keyboardType="numeric"
+                                   placeholder={"Enter number of days"}/>
 
                     </View>
                 </View>
@@ -125,34 +126,53 @@ const TravelPlanForm: React.FC = () => {
 
                 {/* Destination field with autocomplete */}
                 <View style={styles.formItems}>
-                    <Text style={[styles.label,{marginBottom: 35}]}>Destination</Text>
+                    <Text style={[styles.label]}>Destination</Text>
                     <View style={styles.autocompleteContainer}>
-                        <Autocomplete
-                            data={DestinationLocation}
-                            defaultValue={queryDestination}
-                            listContainerStyle={styles.suggestionList}
-                            // containerStyle={styles.inputContainer}
-                            inputContainerStyle={styles.inputField}
-                            style={styles.inputContainer}
-                            onChangeText={handleDestinationQueryChange}
-                            flatListProps={{
-                                renderItem: ({ item }) => (
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            // @ts-ignore
-                                            setQueryDestination(item.city); // Set the selected location
-                                            setDestinationLocations([]); // Clear the suggestions after selecting
-                                        }}
-                                    >
-                                        <Text style={styles.suggestionText}>{item.city}</Text>
-                                    </TouchableOpacity>
-                                ),
-                            }}
-                            // inputContainerStyle={styles.inputField}
-                            placeholder="Enter destination"
-                            autoCapitalize="none"
-                            autoCorrect={true}
-                        />
+                        {/*<Autocomplete*/}
+                        {/*    data={DestinationLocation}*/}
+                        {/*    defaultValue={queryDestination}*/}
+                        {/*    listContainerStyle={styles.suggestionList}*/}
+                        {/*    // containerStyle={styles.inputContainer}*/}
+                        {/*    inputContainerStyle={styles.inputField}*/}
+                        {/*    style={styles.inputContainer}*/}
+                        {/*    onChangeText={handleDestinationQueryChange}*/}
+                        {/*    flatListProps={{*/}
+                        {/*        renderItem: ({item}) => (*/}
+                        {/*            <TouchableOpacity*/}
+                        {/*                onPress={() => {*/}
+                        {/*                    // @ts-ignore*/}
+                        {/*                    setQueryDestination(item.city); // Set the selected location*/}
+                        {/*                    setDestinationLocations([]); // Clear the suggestions after selecting*/}
+                        {/*                }}*/}
+                        {/*            >*/}
+                        {/*                <Text style={styles.suggestionText}>{item.city}</Text>*/}
+                        {/*            </TouchableOpacity>*/}
+                        {/*        ),*/}
+                        {/*    }}*/}
+                        {/*    // inputContainerStyle={styles.inputField}*/}
+                        {/*    placeholder="Enter destination"*/}
+                        {/*    autoCapitalize="none"*/}
+                        {/*    autoCorrect={true}*/}
+                        {/*/>*/}
+                        <TextInput style={styles.inputContainer} keyboardType="numeric"
+                                   placeholder={"Enter number of days"}/>
+
+                    </View>
+                </View>
+                <View style={styles.formItems}>
+                    <Text style={styles.label}>Number of days</Text>
+                    <View style={styles.autocompleteContainer}>
+                        <TextInput style={styles.inputContainer} keyboardType="numeric"
+                                   placeholder={"Enter number of days"}/>
+
+                    </View>
+                </View>
+                <View style={styles.formItems}>
+                    <Text style={styles.label}>Starting date</Text>
+                    <View style={styles.autocompleteContainer}>
+                        <TextInput style={styles.inputContainer} keyboardType="numeric"
+                                   placeholder={"Enter number of days"}/>
+
                     </View>
                 </View>
 
@@ -217,7 +237,9 @@ const TravelPlanForm: React.FC = () => {
                     </View>
                 </View>
 
-                <Button  title="Submit" onPress={() => { /* Handle form submission */ }} />
+                <TouchableOpacity style={styles.formSubmitBtn}>
+                    <Text style={styles.btnText}>SUBMIT</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );
@@ -232,13 +254,22 @@ const styles = StyleSheet.create({
 
     form: {
         padding: 20,
+        marginTop: 30,
+        marginHorizontal: 20,
+        backgroundColor: "white",
+        borderRadius: 30,
+        borderWidth: 3,
+        borderColor: Colors.light.text.grey,
+        elevation: 5,
     },
     formItems: {
-        marginVertical: 20,
-        gap: 10
+        marginVertical: 10,
+        justifyContent: "center",
+
+        borderWidth: 3
     },
     label: {
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: 'Poppins-SemiBold',
         marginBottom: 8,
         color: Colors.dark,
@@ -263,12 +294,8 @@ const styles = StyleSheet.create({
 
     },
     autocompleteContainer: {
-        flex: 1,
-        left: 0,
-        position: 'absolute',
-        backgroundColor: 'rgba(0,0,0,0.0)',
-        right: 0,
-        top: 35,
+        width: "100%",
+        height: hp("5%")
         // zIndex: 10,
     },
     suggestionText: {
@@ -280,23 +307,23 @@ const styles = StyleSheet.create({
         width: '100%',
         maxHeight: 150,
         backgroundColor: '#fff',
-        zIndex:100// Ensure the list is visible
+        zIndex: 100// Ensure the list is visible
     },
     budgetContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: 8,
+        borderWidth: 1
     },
     budgetCard: {
-        flex: 1,
+        flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        borderWidth: 1,
+        borderWidth: 2,
         borderColor: '#ccc',
         borderRadius: 8,
         backgroundColor: Colors.light.background,
-        marginHorizontal: 5,
-        elevation: 3,
+        elevation: 1,
     },
     selectedCard: {
         borderColor: Colors.light.icon,
@@ -315,6 +342,23 @@ const styles = StyleSheet.create({
     loadingIndicator: {
         marginVertical: 20,
     },
+    formSubmitBtn: {
+        width: '100%',
+        height: hp("5%"),
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 30,
+        borderColor: "white",
+        backgroundColor: Colors.light.icon,
+        boxShadow: "0px 0px 10px rgba(0,0,0,0.2)",
+    },
+    btnText: {
+        fontSize: 18,
+        fontFamily: 'Poppins-SemiBold',
+        color: Colors.white,
+    }
+
+
 });
 
 export default TravelPlanForm;

@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const MenuItems = () => {
     const navigation = useNavigation()
+    const height=30
+    const width=30
 
     return (
         <View style={styles.menu}>
@@ -20,7 +22,7 @@ const MenuItems = () => {
                         navigation.navigate("flight")
                     }}
                     pressEffect={'ripple'}>
-                    <SvgXml xml={aeroplaneSVG} width="25" height="25" />
+                    <SvgXml xml={aeroplaneSVG} width={width} height={height} />
                 </Pressable>
                 <Text style={styles.menuText}>Flight</Text>
             </Animated.View>
@@ -32,7 +34,7 @@ const MenuItems = () => {
                         navigation.navigate("hotel")
                     }}
                     pressEffect={'ripple'}>
-                    <SvgXml xml={bedSVG} width="25" height="25" />
+                    <SvgXml xml={bedSVG} width={width} height={height} />
                 </Pressable>
                 <Text style={styles.menuText}>Hotels</Text>
             </View>
@@ -44,7 +46,7 @@ const MenuItems = () => {
                         navigation.navigate("train")
                     }}
                     pressEffect={'ripple'}>
-                    <SvgXml xml={trainSVG} width="25" height="25" />
+                    <SvgXml xml={trainSVG} width={width} height={height} />
                 </Pressable>
                 <Text style={styles.menuText}>Train</Text>
             </View>
@@ -56,7 +58,7 @@ const MenuItems = () => {
                         navigation.navigate("bus")
                     }}
                     pressEffect={'ripple'}>
-                    <SvgXml xml={busSVG} width="25" height="25" />
+                    <SvgXml xml={busSVG} width={width} height={height} />
                 </Pressable>
                 <Text style={styles.menuText}>Bus</Text>
             </View>
@@ -87,8 +89,8 @@ const styles = StyleSheet.create({
     round: {
         borderRadius: 20,
         backgroundColor: '#ffffff',
-        width: wp('12%'),
-        height: wp('12%'),
+        width: wp('15%'),
+        height: wp('15%'),
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: wp('1%'),

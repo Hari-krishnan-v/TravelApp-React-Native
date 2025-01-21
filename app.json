@@ -12,6 +12,10 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/TraveWithUsIcon.png",
         "backgroundColor": "#ffffff"
@@ -44,7 +48,8 @@
       },
       "eas": {
         "projectId": "3dc27b32-2844-4a1c-8c30-28ae626265a7"
-      }
+      },
+      "weatherApi": "b2f7bd890d69a2775caebd34f2f23d66"
     }
   }
 }
